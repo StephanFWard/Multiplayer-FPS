@@ -6,7 +6,7 @@ This document tracks the progress of converting the Multiplayer FPS from Unity t
 
 **Project Start Date:** April 26, 2026  
 **Target Completion:** [TBD]  
-**Current Status:** 🟡 **ALL PHASES COMPLETE - Ready for Testing**
+**Current Status:** 🟡 **Phase 6: Asset Migration - In Progress**
 
 ---
 
@@ -66,10 +66,6 @@ This document tracks the progress of converting the Multiplayer FPS from Unity t
 - Interactive door system
 - All classes structured for networking
 
----
-
-## In Progress Phases 🟡
-
 ### Phase 3: Player Movement & Combat ✅ COMPLETE
 - [x] Implement enhanced character movement (blend tree equivalent)
 - [x] Create animation montage system for shooting/reload/melee
@@ -84,10 +80,6 @@ This document tracks the progress of converting the Multiplayer FPS from Unity t
 - Enhanced `MultiplayerFPSCharacter.h/cpp` with animation montages and camera effects
 - Enhanced `Weapon.h/cpp` with reload mechanics and visual effects
 - Complete combat system with hit detection, damage falloff, and headshots
-
----
-
-## Planned Phases ⏳
 
 ### Phase 4: Networking (Photon → Unreal Replication) ✅ COMPLETE
 - [x] Replace Photon with UE5 replication
@@ -116,13 +108,17 @@ This document tracks the progress of converting the Multiplayer FPS from Unity t
 - Enhanced `AMultiplayerFPSPlayerController` with UI management
 - Complete UI framework ready for blueprint setup
 
+## In Progress Phases 🟡
+
 ### Phase 6: Asset Migration
-**Status:** 📋 **PLANNED**
+**Status:** 🟡 **IN PROGRESS**
 - [ ] Import character models (Policeman, RobotX, RobotY)
 - [ ] Configure skeletal meshes and bones
 - [ ] Import gun model and attachments
 - [ ] Import environment and materials
 - [ ] Convert sprites and UI graphics
+
+## Planned Phases ⏳
 
 ### Phase 7: Animation System
 **Status:** 📋 **PLANNED**
