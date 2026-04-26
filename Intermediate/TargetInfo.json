@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "MultiplayerFPS",
+			"Path": "..\\Source\\MultiplayerFPS.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "MultiplayerFPSEditor",
+			"Path": "..\\Source\\MultiplayerFPSEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

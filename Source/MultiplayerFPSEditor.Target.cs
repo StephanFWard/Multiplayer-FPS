@@ -8,9 +8,6 @@ public class MultiplayerFPSEditorTarget : TargetRules
 	public MultiplayerFPSEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-
-		ExtraModuleNames.Add("MultiplayerFPS");
-	}
-}
+			DefaultBuildSettings = BuildSettingsVersion.V7;
+			IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
+			BuildEnvironment = TargetBuildEnvironment.Unique;

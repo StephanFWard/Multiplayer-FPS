@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.3",
+	"EngineAssociation": "5.7",
 	"Category": "Multiplayer Games",
 	"Description": "Multiplayer First-Person Shooter Game",
 	"Modules": [
@@ -18,10 +18,6 @@
 	"Plugins": [
 		{
 			"Name": "EnhancedInput",
-			"Enabled": true
-		},
-		{
-			"Name": "Networking",
 			"Enabled": true
 		}
 	],

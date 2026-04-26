@@ -8,9 +8,5 @@ public class MultiplayerFPSTarget : TargetRules
 	public MultiplayerFPSTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-
-		ExtraModuleNames.Add("MultiplayerFPS");
-	}
-}
+			DefaultBuildSettings = BuildSettingsVersion.V7;
+			IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;

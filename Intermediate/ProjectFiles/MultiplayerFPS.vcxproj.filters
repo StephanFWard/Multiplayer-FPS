@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\.editorconfig" />
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\BUILD_INSTRUCTIONS.md" />
+    <None Include="..\..\CONVERSION_SUMMARY.md" />
+    <None Include="..\..\LICENSE" />
+    <None Include="..\..\MIGRATION_GUIDE.md" />
+    <None Include="..\..\MultiplayerFPS.uproject" />
+    <None Include="..\..\PROJECT_STATUS.md" />
+    <None Include="..\..\QUICK_REFERENCE.md" />
+    <None Include="..\..\README.md" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\MultiplayerFPS.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\MultiplayerFPSEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Source\MultiplayerFPS">
+      <UniqueIdentifier>{27CFF4CB-8B78-3E67-9342-55DB6B61FB36}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\MultiplayerFPS\MultiplayerFPS.Build.cs">
+      <Filter>Source\MultiplayerFPS</Filter>
+    </None>
+    <Filter Include="Source\MultiplayerFPS\Private">
+      <UniqueIdentifier>{E8B2DDC7-7994-3801-9073-A3C2367622AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MultiplayerFPS\Private\Character">
+      <UniqueIdentifier>{240CCD46-D2A0-35A3-A4C9-76F6E0BC3E5B}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Character\MultiplayerFPSCharacter.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Character</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Environment">
+      <UniqueIdentifier>{6C18DAEF-30C7-3354-A968-CF6DD0539E3A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Environment\DoorActor.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Environment</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Game">
+      <UniqueIdentifier>{E029720A-CA9C-3D9A-939B-BAD83FE06A32}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Game\MultiplayerFPSGameMode.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Game\MultiplayerFPSPlayerController.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\MultiplayerFPS.cpp">
+      <Filter>Source\MultiplayerFPS\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Weapons">
+      <UniqueIdentifier>{6F9D7581-3E1E-3C14-90D4-8655AF9B46FC}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Weapons\Weapon.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Weapons</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Public">
+      <UniqueIdentifier>{B6BA4DF8-DD9C-3404-ACA5-D837E24DBA4C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MultiplayerFPS\Public\Character">
+      <UniqueIdentifier>{854D192F-9FFA-30E7-B38A-FA36D1680CB4}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Character\MultiplayerFPSCharacter.h">
+      <Filter>Source\MultiplayerFPS\Public\Character</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Environment">
+      <UniqueIdentifier>{FC20599B-4EEA-368E-9AB0-D3634D97F07D}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Environment\DoorActor.h">
+      <Filter>Source\MultiplayerFPS\Public\Environment</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Game">
+      <UniqueIdentifier>{B4696894-AF0E-3208-B5EF-A53D70977C20}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Game\MultiplayerFPSGameMode.h">
+      <Filter>Source\MultiplayerFPS\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Game\MultiplayerFPSPlayerController.h">
+      <Filter>Source\MultiplayerFPS\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\MultiplayerFPS.h">
+      <Filter>Source\MultiplayerFPS\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Weapons">
+      <UniqueIdentifier>{C89AA7AD-D3E3-365F-857A-55E54CD0BFA2}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Weapons\Weapon.h">
+      <Filter>Source\MultiplayerFPS\Public\Weapons</Filter>
+    </ClInclude>
+    <None Include="..\..\SOURCE_REFERENCE.md" />
+  </ItemGroup>
+</Project>
