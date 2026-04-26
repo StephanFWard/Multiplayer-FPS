@@ -1,5 +1,7 @@
 #include "Weapons/Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Systems/DamageSystem.h"
 
 AWeapon::AWeapon()
 {
@@ -11,6 +13,9 @@ AWeapon::AWeapon()
 
 	// Initialize ammo
 	CurrentAmmo = MagazineCapacity;
+
+	// Enable replication
+	bReplicates = true;
 }
 
 void AWeapon::BeginPlay()
@@ -23,11 +28,23 @@ void AWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeapon, CurrentAmmo);
+	DOREPLIFETIME(AWeapon, TotalAmmo);
+	DOREPLIFETIME(AWeapon, bIsReloading);
+}
+
 void AWeapon::Fire()
 {
-	if (!HasAmmo())
+	if (!HasAmmo() || bIsReloading)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Out of ammo!"));
+		if (!HasAmmo())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Out of ammo!"));
+		}
 		return;
 	}
 
@@ -40,11 +57,19 @@ void AWeapon::Fire()
 	// Perform raycast
 	PerformRaycast();
 
+	// Play effects
+	PlayMuzzleFlash();
+	PlayFireSound();
+
+	// Play animation
+	if (FireMontage && MeshComponent)
+	{
+		MeshComponent->PlayAnimation(FireMontage, false);
+	}
+
 	// Update ammo
 	CurrentAmmo--;
 	LastFireTime = GetWorld()->GetTimeSeconds();
-
-	// TODO: Play fire animation and sound
 
 	UE_LOG(LogTemp, Warning, TEXT("Weapon fired! Ammo: %d"), CurrentAmmo);
 }
@@ -76,21 +101,75 @@ void AWeapon::PerformRaycast()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Hit actor: %s"), *HitResult.GetActor()->GetName());
 			
+			// Calculate damage with falloff and headshot
+			float Distance = FVector::Dist(StartLocation, HitResult.ImpactPoint);
+			bool bIsHeadshot = UDamageSystem::IsHeadshot(HitResult.ImpactPoint, HitResult.GetActor());
+			float ActualDamage = UDamageSystem::CalculateDamage(Damage, Distance, bIsHeadshot);
+			
 			// Apply damage to hit actor
 			AActor* HitActor = HitResult.GetActor();
 			if (HitActor && HitActor != GetOwner())
 			{
-				HitActor->TakeDamage(Damage, FDamageEvent(), nullptr, this);
+				HitActor->TakeDamage(ActualDamage, FDamageEvent(), nullptr, this);
+				
+				// Apply hit feedback
+				UDamageSystem::ApplyHitFeedback(HitActor, HitResult.ImpactPoint, HitResult.ImpactNormal, ActualDamage);
 			}
+
+			// Spawn impact effect
+			SpawnBulletImpact(HitResult.ImpactPoint, HitResult.ImpactNormal);
 		}
 	}
 }
 
 void AWeapon::Reload()
 {
+	if (CanReload())
+	{
+		StartReload();
+	}
+}
+
+bool AWeapon::CanReload() const
+{
+	return !bIsReloading && CurrentAmmo < MagazineCapacity && TotalAmmo > 0;
+}
+
+void AWeapon::StartReload()
+{
+	bIsReloading = true;
+	ReloadStartTime = GetWorld()->GetTimeSeconds();
+
+	// Play reload sound
+	if (ReloadSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ReloadSound, GetActorLocation());
+	}
+
+	// Play reload animation
+	if (ReloadMontage && MeshComponent)
+	{
+		MeshComponent->PlayAnimation(ReloadMontage, false);
+	}
+
+	// Schedule finish reload
+	GetWorld()->GetTimerManager().SetTimer(
+		THandle<UObject>(),
+		this,
+		&AWeapon::FinishReload,
+		ReloadTime,
+		false
+	);
+
+	UE_LOG(LogTemp, Warning, TEXT("Starting reload..."));
+}
+
+void AWeapon::FinishReload()
+{
 	if (TotalAmmo <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No ammo left to reload!"));
+		bIsReloading = false;
 		return;
 	}
 
@@ -98,7 +177,7 @@ void AWeapon::Reload()
 	CurrentAmmo += AmmoToLoad;
 	TotalAmmo -= AmmoToLoad;
 
-	// TODO: Play reload animation
+	bIsReloading = false;
 
 	UE_LOG(LogTemp, Warning, TEXT("Weapon reloaded! Current: %d, Total: %d"), CurrentAmmo, TotalAmmo);
 }
@@ -111,4 +190,30 @@ void AWeapon::AddAmmo(int32 Amount)
 bool AWeapon::HasAmmo() const
 {
 	return CurrentAmmo > 0;
+}
+
+void AWeapon::PlayMuzzleFlash()
+{
+	if (MuzzleFlash && MeshComponent)
+	{
+		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, MeshComponent, TEXT("Muzzle"));
+	}
+}
+
+void AWeapon::PlayFireSound()
+{
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+}
+
+void AWeapon::SpawnBulletImpact(const FVector& Location, const FVector& Normal)
+{
+	if (BulletImpactEffect)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		GetWorld()->SpawnActor<AActor>(BulletImpactEffect, Location, Normal.Rotation(), SpawnParams);
+	}
 }

@@ -18,7 +18,7 @@ class AWeapon;
  * Main player character class for Multiplayer FPS
  * Handles movement, combat, and first-person perspective
  */
-UCLASS()
+UCLASS(config=Game)
 class MULTIPLAYERFPS_API AMultiplayerFPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -28,7 +28,15 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	// ========== Replication Functions ==========
+	
+	UFUNCTION(Server, Reliable)
+	void Server_SetAiming(bool bNewAiming);
+
+	UFUNCTION(Server, Reliable)
+	void Server_SetSprinting(bool bNewSprinting);
 
 protected:
 	// ========== Components ==========
@@ -46,26 +54,47 @@ protected:
 
 	// ========== Character Stats ==========
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health", Replicated)
 	float MaxHealth = 100.0f;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Health")
+	UPROPERTY(BlueprintReadOnly, Category = "Health", Replicated)
 	float CurrentHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", Replicated)
 	float WalkSpeed = 600.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", Replicated)
 	float SprintSpeed = 1000.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", Replicated)
 	float AimWalkSpeed = 300.0f;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "Movement", Replicated)
 	bool bIsAiming = false;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	UPROPERTY(BlueprintReadOnly, Category = "Movement", Replicated)
 	bool bIsSprinting = false;
+
+	// ========== Animation System ==========
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* FireMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* MeleeMontage;
+
+	// ========== Camera Effects ==========
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float AimFOV = 60.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float DefaultFOV = 90.0f;
+
+	float CurrentFOV;
 
 	// ========== Input System ==========
 	
@@ -90,7 +119,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* FireAction;
 
-	// ========== Health & Damage ==========
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* ReloadAction;
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void TakeDamage(float Damage);
@@ -100,6 +130,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void Die();
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void Respawn();
 
 	// ========== Weapon System ==========
 	
@@ -113,9 +146,21 @@ protected:
 	void Fire();
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
-	void StopFiring();
+	void Reload();
 
-	// ========== Movement Callbacks ==========
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void PlayFireAnimation();
+
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void PlayReloadAnimation();
+
+	UFUNCTION(BlueprintCallable, Category = "Animation")
+	void PlayMeleeAnimation();
+
+	// ========== Camera Effects ==========
+	
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void UpdateCameraFOV(float DeltaTime);
 	
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

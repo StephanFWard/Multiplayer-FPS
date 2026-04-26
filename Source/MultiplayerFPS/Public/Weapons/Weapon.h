@@ -20,6 +20,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	// ========== Components ==========
@@ -38,19 +39,44 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float Range = 10000.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo", Replicated)
 	int32 MagazineCapacity = 30;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo", Replicated)
 	int32 TotalAmmo = 300;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Ammo")
+	UPROPERTY(BlueprintReadOnly, Category = "Ammo", Replicated)
 	int32 CurrentAmmo;
 
-	// ========== Weapon State ==========
+	// ========== Animation & Effects ==========
 	
-	float LastFireTime = 0.0f;
-	bool bIsFiring = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* FireMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UParticleSystem* MuzzleFlash;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	USoundBase* FireSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	USoundBase* ReloadSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	TSubclassOf<AActor> BulletImpactEffect;
+
+	// ========== Reload System ==========
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Reload", Replicated)
+	bool bIsReloading = false;
+
+	float ReloadStartTime = 0.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reload")
+	float ReloadTime = 2.0f;
 
 	// ========== Firing System ==========
 	
@@ -63,7 +89,27 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	virtual void Reload();
 
-	// Raycast firing
+	// ========== Effects ==========
+	
+	UFUNCTION(BlueprintCallable, Category = "Effects")
+	void PlayMuzzleFlash();
+
+	UFUNCTION(BlueprintCallable, Category = "Effects")
+	void PlayFireSound();
+
+	UFUNCTION(BlueprintCallable, Category = "Effects")
+	void SpawnBulletImpact(const FVector& Location, const FVector& Normal);
+
+	// ========== Reload System ==========
+	
+	UFUNCTION(BlueprintCallable, Category = "Reload")
+	bool CanReload() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Reload")
+	void StartReload();
+
+	UFUNCTION(BlueprintCallable, Category = "Reload")
+	void FinishReload();
 	void PerformRaycast();
 
 	// ========== Ammo Management ==========

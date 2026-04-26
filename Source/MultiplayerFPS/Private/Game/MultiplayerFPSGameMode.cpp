@@ -1,4 +1,5 @@
 #include "Game/MultiplayerFPSGameMode.h"
+#include "Character/MultiplayerFPSCharacter.h"
 
 AMultiplayerFPSGameMode::AMultiplayerFPSGameMode()
 {
@@ -6,6 +7,9 @@ AMultiplayerFPSGameMode::AMultiplayerFPSGameMode()
 	MaxPlayers = 8;
 	RespawnDelay = 5.0f;
 	RoundTime = 600.0f;
+
+	// Set default pawn class
+	DefaultPawnClass = AMultiplayerFPSCharacter::StaticClass();
 }
 
 void AMultiplayerFPSGameMode::BeginPlay()
@@ -46,6 +50,31 @@ void AMultiplayerFPSGameMode::RespawnPlayer(APlayerController* PlayerController)
 		return;
 	}
 
-	// TODO: Implement player respawn logic
-	// This will teleport player to a spawn point and reset their health/state
+	// Get the player's pawn
+	APawn* PlayerPawn = PlayerController->GetPawn();
+	if (!PlayerPawn)
+	{
+		return;
+	}
+
+	// Find a player start
+	AActor* PlayerStart = ChoosePlayerStart(PlayerController);
+	if (!PlayerStart)
+	{
+		return;
+	}
+
+	// Teleport player to spawn point
+	PlayerPawn->SetActorLocation(PlayerStart->GetActorLocation());
+	PlayerPawn->SetActorRotation(PlayerStart->GetActorRotation());
+
+	// Reset player health and state
+	if (AMultiplayerFPSCharacter* Character = Cast<AMultiplayerFPSCharacter>(PlayerPawn))
+	{
+		Character->CurrentHealth = Character->MaxHealth;
+		// TODO: Reset weapon ammo, etc.
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Player respawned at: %s"), *PlayerStart->GetActorLocation().ToString());
+}
 }

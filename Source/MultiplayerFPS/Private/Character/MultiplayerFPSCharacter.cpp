@@ -7,6 +7,8 @@
 #include "InputActionValue.h"
 #include "Weapons/Weapon.h"
 #include "InputMappingContext.h"
+#include "Systems/AnimationSystem.h"
+#include "Game/MultiplayerFPSGameMode.h"
 
 AMultiplayerFPSCharacter::AMultiplayerFPSCharacter()
 {
@@ -30,6 +32,17 @@ AMultiplayerFPSCharacter::AMultiplayerFPSCharacter()
 
 	// Initialize health
 	CurrentHealth = MaxHealth;
+
+	// Initialize camera FOV
+	CurrentFOV = DefaultFOV;
+	if (FirstPersonCameraComponent)
+	{
+		FirstPersonCameraComponent->SetFieldOfView(CurrentFOV);
+	}
+
+	// Enable replication
+	bReplicates = true;
+	SetReplicateMovement(true);
 }
 
 void AMultiplayerFPSCharacter::BeginPlay()
@@ -56,6 +69,12 @@ void AMultiplayerFPSCharacter::BeginPlay()
 void AMultiplayerFPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	UpdateCameraFOV(DeltaTime);
+
+	// Update movement animation
+	float CurrentSpeed = GetVelocity().Size();
+	UAnimationSystem::UpdateMovementAnimation(GetMesh(), CurrentSpeed, bIsAiming, bIsSprinting);
 }
 
 void AMultiplayerFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -104,7 +123,12 @@ void AMultiplayerFPSCharacter::SetupPlayerInputComponent(UInputComponent* Player
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::Fire);
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::CompletedTriggered, this, &AMultiplayerFPSCharacter::StopFiring);
 		}
-	}
+
+		// Reloading
+		if (ReloadAction)
+		{
+			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::Reload);
+		}
 }
 
 void AMultiplayerFPSCharacter::Move(const FInputActionValue& Value)
@@ -133,26 +157,54 @@ void AMultiplayerFPSCharacter::Look(const FInputActionValue& Value)
 
 void AMultiplayerFPSCharacter::StartSprint()
 {
-	bIsSprinting = true;
-	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	if (HasAuthority())
+	{
+		bIsSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+	else
+	{
+		Server_SetSprinting(true);
+	}
 }
 
 void AMultiplayerFPSCharacter::StopSprint()
 {
-	bIsSprinting = false;
-	GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : WalkSpeed;
+	if (HasAuthority())
+	{
+		bIsSprinting = false;
+		GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : WalkSpeed;
+	}
+	else
+	{
+		Server_SetSprinting(false);
+	}
 }
 
 void AMultiplayerFPSCharacter::StartAim()
 {
-	bIsAiming = true;
-	GetCharacterMovement()->MaxWalkSpeed = AimWalkSpeed;
+	if (HasAuthority())
+	{
+		bIsAiming = true;
+		GetCharacterMovement()->MaxWalkSpeed = AimWalkSpeed;
+	}
+	else
+	{
+		Server_SetAiming(true);
+	}
 }
 
 void AMultiplayerFPSCharacter::StopAim()
 {
-	bIsAiming = false;
-	GetCharacterMovement()->MaxWalkSpeed = bIsSprinting ? SprintSpeed : WalkSpeed;
+	if (HasAuthority())
+	{
+		bIsAiming = false;
+		GetCharacterMovement()->MaxWalkSpeed = bIsSprinting ? SprintSpeed : WalkSpeed;
+	}
+	else
+	{
+		Server_SetAiming(false);
+	}
 }
 
 void AMultiplayerFPSCharacter::EquipWeapon(TSubclassOf<AWeapon> WeaponClass)
@@ -189,6 +241,24 @@ void AMultiplayerFPSCharacter::Fire()
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->Fire();
+		PlayFireAnimation();
+	}
+}
+
+void AMultiplayerFPSCharacter::Reload()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Reload();
+		PlayReloadAnimation();
+	}
+}
+
+void AMultiplayerFPSCharacter::StopFiring()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFiring();
 	}
 }
 
@@ -221,4 +291,92 @@ void AMultiplayerFPSCharacter::Die()
 	// Disable input and ragdoll
 	DisableInput(Cast<APlayerController>(GetController()));
 	GetCharacterMovement()->SetComponentTickEnabled(false);
+
+	// Schedule respawn
+	if (UWorld* World = GetWorld())
+	{
+		FTimerHandle RespawnTimerHandle;
+		World->GetTimerManager().SetTimer(
+			RespawnTimerHandle,
+			this,
+			&AMultiplayerFPSCharacter::Respawn,
+			5.0f, // Respawn delay
+			false
+		);
+	}
+}
+
+void AMultiplayerFPSCharacter::Respawn()
+{
+	// Re-enable input and movement
+	EnableInput(Cast<APlayerController>(GetController()));
+	GetCharacterMovement()->SetComponentTickEnabled(true);
+
+	// Reset health
+	CurrentHealth = MaxHealth;
+
+	// Reset position to a spawn point (handled by GameMode)
+	if (AMultiplayerFPSGameMode* GameMode = Cast<AMultiplayerFPSGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		GameMode->RespawnPlayer(Cast<APlayerController>(GetController()));
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Player respawned!"));
+}
+
+void AMultiplayerFPSCharacter::PlayFireAnimation()
+{
+	if (FireMontage && GetMesh())
+	{
+		PlayAnimMontage(FireMontage);
+	}
+}
+
+void AMultiplayerFPSCharacter::PlayReloadAnimation()
+{
+	if (ReloadMontage && GetMesh())
+	{
+		PlayAnimMontage(ReloadMontage);
+	}
+}
+
+void AMultiplayerFPSCharacter::PlayMeleeAnimation()
+{
+	if (MeleeMontage && GetMesh())
+	{
+		PlayAnimMontage(MeleeMontage);
+	}
+}
+
+void AMultiplayerFPSCharacter::UpdateCameraFOV(float DeltaTime)
+{
+	if (!FirstPersonCameraComponent)
+	{
+		return;
+	}
+
+	float TargetFOV = bIsAiming ? AimFOV : DefaultFOV;
+	CurrentFOV = FMath::FInterpTo(CurrentFOV, TargetFOV, DeltaTime, 10.0f);
+	FirstPersonCameraComponent->SetFieldOfView(CurrentFOV);
+}
+
+void AMultiplayerFPSCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMultiplayerFPSCharacter, CurrentHealth);
+	DOREPLIFETIME(AMultiplayerFPSCharacter, bIsAiming);
+	DOREPLIFETIME(AMultiplayerFPSCharacter, bIsSprinting);
+}
+
+void AMultiplayerFPSCharacter::Server_SetAiming_Implementation(bool bNewAiming)
+{
+	bIsAiming = bNewAiming;
+	GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : (bIsSprinting ? SprintSpeed : WalkSpeed);
+}
+
+void AMultiplayerFPSCharacter::Server_SetSprinting_Implementation(bool bNewSprinting)
+{
+	bIsSprinting = bNewSprinting;
+	GetCharacterMovement()->MaxWalkSpeed = bIsSprinting ? SprintSpeed : (bIsAiming ? AimWalkSpeed : WalkSpeed);
 }
