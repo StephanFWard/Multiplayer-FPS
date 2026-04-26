@@ -60,6 +60,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	int32 GetDeaths() const { return Deaths; }
 
-	UFUNCTION(BlueprintCallable, Category = "Player")
-	float GetKDRatio() const { return Deaths > 0 ? (float)Kills / Deaths : Kills; }
+	// UI Management
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	class UMultiplayerFPSHUD* GameHUD;
+
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	class UChatWidget* ChatWidget;
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ShowHUD();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void HideHUD();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ToggleChat();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void UpdateHUD();
 };
