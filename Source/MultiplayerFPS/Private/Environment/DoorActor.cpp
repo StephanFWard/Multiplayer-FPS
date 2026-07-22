@@ -14,7 +14,8 @@ ADoorActor::ADoorActor()
 	// Create trigger box for detection
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
 	TriggerBox->SetupAttachment(RootComponent);
-	TriggerBox->SetCollisionEnabled(ECC_WorldDynamic);
+	TriggerBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	TriggerBox->SetCollisionObjectType(ECC_WorldDynamic);
 	TriggerBox->SetGenerateOverlapEvents(true);
 
 	// Bind overlap events
@@ -88,6 +89,6 @@ void ADoorActor::UpdateDoorRotation(float DeltaTime)
 		// Apply rotation to door mesh
 		FRotator NewRotation = DoorMesh->GetComponentRotation();
 		NewRotation.Yaw = CurrentDoorRotation;
-		DoorMesh->SetComponentRotation(NewRotation);
+		DoorMesh->SetWorldRotation(NewRotation);
 	}
 }

@@ -1,29 +1,34 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "5.7",
-	"Category": "Multiplayer Games",
-	"Description": "Multiplayer First-Person Shooter Game",
-	"Modules": [
-		{
-			"Name": "MultiplayerFPS",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"PlatformAllowList": [
-				"Win64",
-				"Linux",
-				"Mac"
-			]
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "EnhancedInput",
-			"Enabled": true
-		}
-	],
-	"TargetPlatforms": [
-		"Windows",
-		"Linux",
-		"Mac"
-	]
+  "FileVersion": 3,
+  "EngineAssociation": "5.7",
+  "Category": "Multiplayer Games",
+  "Description": "Multiplayer First-Person Shooter Game",
+  "Modules": [
+    {
+      "Name": "MultiplayerFPS",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "EnhancedInput",
+      "Enabled": true
+    },
+    {
+      "Name": "VisualStudioTools",
+      "Enabled": true,
+      "SupportedTargetPlatforms": [
+        "Win64"
+      ]
+    }
+  ],
+  "TargetPlatforms": [
+    "Windows",
+    "Linux",
+    "Mac"
+  ],
+  "AdditionalRootDirectories": [],
+  "AdditionalPluginDirectories": [],
+  "EpicSampleNameHash": ""
 }

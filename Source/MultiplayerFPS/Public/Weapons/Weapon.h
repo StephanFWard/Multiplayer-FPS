@@ -78,6 +78,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reload")
 	float ReloadTime = 2.0f;
 
+	// ========== Firing State ==========
+	
+	float LastFireTime = 0.0f;
+	bool bIsFiring = false;
+
+public:
 	// ========== Firing System ==========
 	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
@@ -110,7 +116,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Reload")
 	void FinishReload();
-	void PerformRaycast();
 
 	// ========== Ammo Management ==========
 	
@@ -119,6 +124,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 	bool HasAmmo() const;
+
+protected:
+	void PerformRaycast();
 
 public:
 	// Getter functions

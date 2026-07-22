@@ -2,6 +2,12 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Systems/DamageSystem.h"
+#include "Net/UnrealNetwork.h"
+#include "TimerManager.h"
+#include "GameFramework/DamageType.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/Actor.h"
+#include "Engine/DamageEvents.h"
 
 AWeapon::AWeapon()
 {
@@ -13,6 +19,10 @@ AWeapon::AWeapon()
 
 	// Initialize ammo
 	CurrentAmmo = MagazineCapacity;
+	TotalAmmo = 300;
+	LastFireTime = 0.0f;
+	bIsFiring = false;
+	bIsReloading = false;
 
 	// Enable replication
 	bReplicates = true;
@@ -153,8 +163,9 @@ void AWeapon::StartReload()
 	}
 
 	// Schedule finish reload
+	FTimerHandle ReloadTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(
-		THandle<UObject>(),
+		ReloadTimerHandle,
 		this,
 		&AWeapon::FinishReload,
 		ReloadTime,

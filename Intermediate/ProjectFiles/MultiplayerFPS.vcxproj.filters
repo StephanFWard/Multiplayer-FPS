@@ -4,11 +4,108 @@
     <None Include="..\..\.editorconfig" />
     <None Include="..\..\.gitattributes" />
     <None Include="..\..\.gitignore" />
+    <None Include="..\..\.vsconfig" />
     <None Include="..\..\BUILD_INSTRUCTIONS.md" />
     <None Include="..\..\CONVERSION_SUMMARY.md" />
     <None Include="..\..\LICENSE" />
     <None Include="..\..\MIGRATION_GUIDE.md" />
     <None Include="..\..\MultiplayerFPS.uproject" />
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{BB38096A-B391-30DC-A0D4-4F3EA6B44507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools">
+      <UniqueIdentifier>{41769F9C-1A97-316F-BB54-C3A5E5B67BD9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Config">
+      <UniqueIdentifier>{CB5E8725-3658-331E-9E61-542E2997D7C5}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Plugins\VisualStudioTools\Config\FilterPlugin.ini">
+      <Filter>Plugins\VisualStudioTools\Config</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Source">
+      <UniqueIdentifier>{1D6F83A9-DB28-3ED2-9726-5CBD49662E2A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper">
+      <UniqueIdentifier>{DA293EF3-DE5E-3E0C-8AB9-5D9B37A141A4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private">
+      <UniqueIdentifier>{D4B7A11D-48EF-383A-B625-62F4B65D3FD8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private\VisualStudioBlueprintDebuggerHelperModule.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private\VisualStudioBlueprintDebuggerHelperModule.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\Private</Filter>
+    </ClInclude>
+    <None Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper\VisualStudioBlueprintDebuggerHelper.Build.cs">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioBlueprintDebuggerHelper</Filter>
+    </None>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools">
+      <UniqueIdentifier>{E48AC123-3582-39B0-901B-970708A27A9A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools\Private">
+      <UniqueIdentifier>{75F6F5BA-F8E5-3E94-8434-FA6DC9ABBA70}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintAssetHelper.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintAssetHelpers.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintReferencesCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\BlueprintReferencesCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\FSmartBSTR.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioTools.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsBlueprintBreakpointExtension.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsBlueprintBreakpointExtension.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandletBase.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VisualStudioToolsCommandletBase.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSServerCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSServerCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSTestAdapterCommandlet.cpp">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Private\VSTestAdapterCommandlet.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Private</Filter>
+    </ClInclude>
+    <Filter Include="Plugins\VisualStudioTools\Source\VisualStudioTools\Public">
+      <UniqueIdentifier>{333EB5AC-492F-3ED7-9C7F-15701C1818EC}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\Public\VisualStudioTools.h">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools\Public</Filter>
+    </ClInclude>
+    <None Include="..\..\Plugins\VisualStudioTools\Source\VisualStudioTools\VisualStudioTools.Build.cs">
+      <Filter>Plugins\VisualStudioTools\Source\VisualStudioTools</Filter>
+    </None>
+    <None Include="..\..\Plugins\VisualStudioTools\VisualStudioTools.uplugin">
+      <Filter>Plugins\VisualStudioTools</Filter>
+    </None>
     <None Include="..\..\PROJECT_STATUS.md" />
     <None Include="..\..\QUICK_REFERENCE.md" />
     <None Include="..\..\README.md" />
@@ -30,6 +127,27 @@
     <Filter Include="Source\MultiplayerFPS\Private">
       <UniqueIdentifier>{E8B2DDC7-7994-3801-9073-A3C2367622AF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\MultiplayerFPS\Private\AI">
+      <UniqueIdentifier>{04E7E002-AEEE-3085-86F4-34661115E325}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\AI\BasicAIController.cpp">
+      <Filter>Source\MultiplayerFPS\Private\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\AI\ThreatDetection.cpp">
+      <Filter>Source\MultiplayerFPS\Private\AI</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\AssetManagement">
+      <UniqueIdentifier>{EBA212CF-B5F2-3C63-B94D-200A695B4BC6}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\AssetManagement\MultiplayerFPSAssetManager.cpp">
+      <Filter>Source\MultiplayerFPS\Private\AssetManagement</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Audio">
+      <UniqueIdentifier>{52C37114-7B29-3D1E-A507-E7CC007EF692}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Audio\AudioManager.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Audio</Filter>
+    </ClCompile>
     <Filter Include="Source\MultiplayerFPS\Private\Character">
       <UniqueIdentifier>{240CCD46-D2A0-35A3-A4C9-76F6E0BC3E5B}</UniqueIdentifier>
     </Filter>
@@ -42,6 +160,12 @@
     <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Environment\DoorActor.cpp">
       <Filter>Source\MultiplayerFPS\Private\Environment</Filter>
     </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Gameplay">
+      <UniqueIdentifier>{060BBBF7-875F-3F13-BA92-4A2AB0C4158A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Gameplay\LevelProgression.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Gameplay</Filter>
+    </ClCompile>
     <Filter Include="Source\MultiplayerFPS\Private\Game">
       <UniqueIdentifier>{E029720A-CA9C-3D9A-939B-BAD83FE06A32}</UniqueIdentifier>
     </Filter>
@@ -51,8 +175,71 @@
     <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Game\MultiplayerFPSPlayerController.cpp">
       <Filter>Source\MultiplayerFPS\Private\Game</Filter>
     </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Level">
+      <UniqueIdentifier>{55394B6C-1F67-3DC5-9CD2-7A9C3B5575F5}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Level\LevelGenerator.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Level\LevelManager.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Level</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\MultiplayerFPS\Private\MultiplayerFPS.cpp">
       <Filter>Source\MultiplayerFPS\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Multiplayer">
+      <UniqueIdentifier>{529294CB-84A9-3A01-85F2-441F6BB9B6C8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Multiplayer\DisconnectHandler.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Multiplayer\GameRules.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Multiplayer\LobbyManager.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Multiplayer\MultiplayerFPSGameSession.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Multiplayer</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Pickups">
+      <UniqueIdentifier>{58C6DC56-1D49-3391-9340-B30E1E656D0B}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Pickups\AmmoPickup.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Pickups\BasePickup.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Pickups\HealthPickup.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Pickups</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Systems">
+      <UniqueIdentifier>{2C90D49E-3E77-398B-A4FB-428B4BA31C02}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Systems\AnimationSystem.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Systems\DamageSystem.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Systems</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\Testing">
+      <UniqueIdentifier>{BB78FD20-ED46-306C-BD49-DA63DF57A03C}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\Testing\TestManager.cpp">
+      <Filter>Source\MultiplayerFPS\Private\Testing</Filter>
+    </ClCompile>
+    <Filter Include="Source\MultiplayerFPS\Private\UI">
+      <UniqueIdentifier>{81F73864-4BC3-3749-834B-79E005FEEB3A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\UI\ChatWidget.cpp">
+      <Filter>Source\MultiplayerFPS\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\UI\LoginWidget.cpp">
+      <Filter>Source\MultiplayerFPS\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MultiplayerFPS\Private\UI\MultiplayerFPSHUD.cpp">
+      <Filter>Source\MultiplayerFPS\Private\UI</Filter>
     </ClCompile>
     <Filter Include="Source\MultiplayerFPS\Private\Weapons">
       <UniqueIdentifier>{6F9D7581-3E1E-3C14-90D4-8655AF9B46FC}</UniqueIdentifier>
@@ -63,6 +250,27 @@
     <Filter Include="Source\MultiplayerFPS\Public">
       <UniqueIdentifier>{B6BA4DF8-DD9C-3404-ACA5-D837E24DBA4C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\MultiplayerFPS\Public\AI">
+      <UniqueIdentifier>{93DB5A0C-7345-3F8C-BC9E-B4A3743EE128}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\AI\BasicAIController.h">
+      <Filter>Source\MultiplayerFPS\Public\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\AI\ThreatDetection.h">
+      <Filter>Source\MultiplayerFPS\Public\AI</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\AssetManagement">
+      <UniqueIdentifier>{9CE0F83E-54F0-33CB-93EE-15A868DF0DAF}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\AssetManagement\MultiplayerFPSAssetManager.h">
+      <Filter>Source\MultiplayerFPS\Public\AssetManagement</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Audio">
+      <UniqueIdentifier>{B26B5E4A-3F53-3D29-AC90-CD2E9EF0C55E}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Audio\AudioManager.h">
+      <Filter>Source\MultiplayerFPS\Public\Audio</Filter>
+    </ClInclude>
     <Filter Include="Source\MultiplayerFPS\Public\Character">
       <UniqueIdentifier>{854D192F-9FFA-30E7-B38A-FA36D1680CB4}</UniqueIdentifier>
     </Filter>
@@ -75,6 +283,12 @@
     <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Environment\DoorActor.h">
       <Filter>Source\MultiplayerFPS\Public\Environment</Filter>
     </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Gameplay">
+      <UniqueIdentifier>{771B7828-CB0F-34B9-AE48-0EB796CC9898}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Gameplay\LevelProgression.h">
+      <Filter>Source\MultiplayerFPS\Public\Gameplay</Filter>
+    </ClInclude>
     <Filter Include="Source\MultiplayerFPS\Public\Game">
       <UniqueIdentifier>{B4696894-AF0E-3208-B5EF-A53D70977C20}</UniqueIdentifier>
     </Filter>
@@ -84,8 +298,71 @@
     <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Game\MultiplayerFPSPlayerController.h">
       <Filter>Source\MultiplayerFPS\Public\Game</Filter>
     </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Level">
+      <UniqueIdentifier>{B7B46011-5EDB-32BA-AB1A-478688EB5D0E}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Level\LevelGenerator.h">
+      <Filter>Source\MultiplayerFPS\Public\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Level\LevelManager.h">
+      <Filter>Source\MultiplayerFPS\Public\Level</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MultiplayerFPS\Public\MultiplayerFPS.h">
       <Filter>Source\MultiplayerFPS\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Multiplayer">
+      <UniqueIdentifier>{FE75308A-362B-3FC4-B160-2B6A41B307CD}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Multiplayer\DisconnectHandler.h">
+      <Filter>Source\MultiplayerFPS\Public\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Multiplayer\GameRules.h">
+      <Filter>Source\MultiplayerFPS\Public\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Multiplayer\LobbyManager.h">
+      <Filter>Source\MultiplayerFPS\Public\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Multiplayer\MultiplayerFPSGameSession.h">
+      <Filter>Source\MultiplayerFPS\Public\Multiplayer</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Pickups">
+      <UniqueIdentifier>{1C8E51D5-CE59-351B-9B01-25EA1B6F00BB}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Pickups\AmmoPickup.h">
+      <Filter>Source\MultiplayerFPS\Public\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Pickups\BasePickup.h">
+      <Filter>Source\MultiplayerFPS\Public\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Pickups\HealthPickup.h">
+      <Filter>Source\MultiplayerFPS\Public\Pickups</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Systems">
+      <UniqueIdentifier>{88DAB267-0091-31B5-83C6-8E843983EAEE}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Systems\AnimationSystem.h">
+      <Filter>Source\MultiplayerFPS\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Systems\DamageSystem.h">
+      <Filter>Source\MultiplayerFPS\Public\Systems</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\Testing">
+      <UniqueIdentifier>{0A1C6E19-9D38-31FF-97ED-02FF3E2CCA33}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\Testing\TestManager.h">
+      <Filter>Source\MultiplayerFPS\Public\Testing</Filter>
+    </ClInclude>
+    <Filter Include="Source\MultiplayerFPS\Public\UI">
+      <UniqueIdentifier>{DA358B9A-39D1-33C9-B429-F33EEC9C75AB}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\UI\ChatWidget.h">
+      <Filter>Source\MultiplayerFPS\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\UI\LoginWidget.h">
+      <Filter>Source\MultiplayerFPS\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MultiplayerFPS\Public\UI\MultiplayerFPSHUD.h">
+      <Filter>Source\MultiplayerFPS\Public\UI</Filter>
     </ClInclude>
     <Filter Include="Source\MultiplayerFPS\Public\Weapons">
       <UniqueIdentifier>{C89AA7AD-D3E3-365F-857A-55E54CD0BFA2}</UniqueIdentifier>

@@ -27,15 +27,16 @@ public:
 	void DestroyRoom();
 
 	// Player management
-	void RegisterPlayer(AMultiplayerFPSPlayerController* PlayerController);
-	void UnregisterPlayer(AMultiplayerFPSPlayerController* PlayerController);
+	void RegisterPlayer(APlayerController* NewPlayer, const FUniqueNetIdRepl& UniqueId, bool bWasFromInvite) override;
+	void UnregisterPlayer(const APlayerController* ExitingPlayer) override;
+	void UnregisterPlayer(FName InSessionName, const FUniqueNetIdRepl& UniqueId) override;
 	TArray<AMultiplayerFPSPlayerController*> GetConnectedPlayers() const;
 
 	// Room information
 	FString GetRoomName() const { return RoomName; }
-	int32 GetMaxPlayers() const { return MaxPlayers; }
+	int32 GetMaxPlayers() const { return RoomMaxPlayers; }
 	int32 GetCurrentPlayerCount() const { return ConnectedPlayers.Num(); }
-	bool IsRoomFull() const { return GetCurrentPlayerCount() >= MaxPlayers; }
+	bool IsRoomFull() const { return GetCurrentPlayerCount() >= RoomMaxPlayers; }
 
 	// Game rules
 	void StartGame();
@@ -61,7 +62,7 @@ protected:
 	FString RoomName;
 
 	UPROPERTY(Replicated)
-	int32 MaxPlayers;
+	int32 RoomMaxPlayers;
 
 	UPROPERTY(Replicated)
 	bool bGameInProgress;

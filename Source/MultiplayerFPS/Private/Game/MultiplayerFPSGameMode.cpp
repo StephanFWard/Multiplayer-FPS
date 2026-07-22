@@ -71,10 +71,9 @@ void AMultiplayerFPSGameMode::RespawnPlayer(APlayerController* PlayerController)
 	// Reset player health and state
 	if (AMultiplayerFPSCharacter* Character = Cast<AMultiplayerFPSCharacter>(PlayerPawn))
 	{
-		Character->CurrentHealth = Character->MaxHealth;
+		Character->Heal(Character->GetMaxHealth());
 		// TODO: Reset weapon ammo, etc.
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Player respawned at: %s"), *PlayerStart->GetActorLocation().ToString());
-}
 }

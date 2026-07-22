@@ -1,12 +1,12 @@
 #include "Multiplayer/MultiplayerFPSGameSession.h"
-#include "Player/MultiplayerFPSPlayerController.h"
+#include "Game/MultiplayerFPSPlayerController.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
 
 AMultiplayerFPSGameSession::AMultiplayerFPSGameSession()
 {
 	bGameInProgress = false;
-	MaxPlayers = 8;
+	RoomMaxPlayers = 8;
 }
 
 void AMultiplayerFPSGameSession::BeginPlay()
@@ -39,10 +39,10 @@ bool AMultiplayerFPSGameSession::CreateRoom(const FString& InRoomName, int32 InM
 	}
 
 	RoomName = InRoomName;
-	MaxPlayers = InMaxPlayers;
+	RoomMaxPlayers = InMaxPlayers;
 	bGameInProgress = false;
 
-	UE_LOG(LogTemp, Log, TEXT("Room created: %s (Max players: %d)"), *RoomName, MaxPlayers);
+	UE_LOG(LogTemp, Log, TEXT("Room created: %s (Max players: %d)"), *RoomName, RoomMaxPlayers);
 	return true;
 }
 
@@ -53,7 +53,9 @@ bool AMultiplayerFPSGameSession::JoinRoom(const FString& InRoomName, AMultiplaye
 		return false;
 	}
 
-	RegisterPlayer(PlayerController);
+	// Create a dummy unique net ID for the player
+	FUniqueNetIdRepl UniqueId;
+	RegisterPlayer(PlayerController, UniqueId, false);
 	return true;
 }
 
@@ -86,40 +88,45 @@ void AMultiplayerFPSGameSession::DestroyRoom()
 	UE_LOG(LogTemp, Log, TEXT("Room destroyed"));
 }
 
-void AMultiplayerFPSGameSession::RegisterPlayer(AMultiplayerFPSPlayerController* PlayerController)
+void AMultiplayerFPSGameSession::RegisterPlayer(APlayerController* NewPlayer, const FUniqueNetIdRepl& UniqueId, bool bWasFromInvite)
 {
-	if (!PlayerController || ConnectedPlayers.Contains(PlayerController))
+	Super::RegisterPlayer(NewPlayer, UniqueId, bWasFromInvite);
+
+	AMultiplayerFPSPlayerController* FPSPlayerController = Cast<AMultiplayerFPSPlayerController>(NewPlayer);
+	if (FPSPlayerController && !ConnectedPlayers.Contains(FPSPlayerController))
 	{
-		return;
+		ConnectedPlayers.Add(FPSPlayerController);
+		OnPlayerJoined.Broadcast(FPSPlayerController);
+		BroadcastPlayerListUpdate();
+
+		UE_LOG(LogTemp, Log, TEXT("Player joined room: %s"), *FPSPlayerController->GetName());
 	}
-
-	ConnectedPlayers.Add(PlayerController);
-	OnPlayerJoined.Broadcast(PlayerController);
-
-	BroadcastPlayerListUpdate();
-
-	UE_LOG(LogTemp, Log, TEXT("Player joined room: %s"), *PlayerController->GetName());
 }
 
-void AMultiplayerFPSGameSession::UnregisterPlayer(AMultiplayerFPSPlayerController* PlayerController)
+void AMultiplayerFPSGameSession::UnregisterPlayer(const APlayerController* ExitingPlayer)
 {
-	if (!PlayerController || !ConnectedPlayers.Contains(PlayerController))
+	Super::UnregisterPlayer(ExitingPlayer);
+
+	AMultiplayerFPSPlayerController* FPSPlayerController = Cast<AMultiplayerFPSPlayerController>(const_cast<APlayerController*>(ExitingPlayer));
+	if (FPSPlayerController && ConnectedPlayers.Contains(FPSPlayerController))
 	{
-		return;
+		ConnectedPlayers.Remove(FPSPlayerController);
+		OnPlayerLeft.Broadcast(FPSPlayerController);
+		BroadcastPlayerListUpdate();
+
+		UE_LOG(LogTemp, Log, TEXT("Player left room: %s"), *FPSPlayerController->GetName());
+
+		// If no players left, destroy room
+		if (ConnectedPlayers.Num() == 0)
+		{
+			DestroyRoom();
+		}
 	}
+}
 
-	ConnectedPlayers.Remove(PlayerController);
-	OnPlayerLeft.Broadcast(PlayerController);
-
-	BroadcastPlayerListUpdate();
-
-	UE_LOG(LogTemp, Log, TEXT("Player left room: %s"), *PlayerController->GetName());
-
-	// If no players left, destroy room
-	if (ConnectedPlayers.Num() == 0)
-	{
-		DestroyRoom();
-	}
+void AMultiplayerFPSGameSession::UnregisterPlayer(FName InSessionName, const FUniqueNetIdRepl& UniqueId)
+{
+	Super::UnregisterPlayer(InSessionName, UniqueId);
 }
 
 TArray<AMultiplayerFPSPlayerController*> AMultiplayerFPSGameSession::GetConnectedPlayers() const
@@ -158,7 +165,7 @@ void AMultiplayerFPSGameSession::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AMultiplayerFPSGameSession, RoomName);
-	DOREPLIFETIME(AMultiplayerFPSGameSession, MaxPlayers);
+	DOREPLIFETIME(AMultiplayerFPSGameSession, RoomMaxPlayers);
 	DOREPLIFETIME(AMultiplayerFPSGameSession, bGameInProgress);
 }
 

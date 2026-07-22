@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "UObject/Object.h"
 #include "LevelManager.generated.h"
 
 class ALevelGenerator;
@@ -18,22 +18,40 @@ public:
 	ULevelManager();
 
 	// Level operations
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	bool LoadLevel(const FString& LevelName);
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	bool GenerateProceduralLevel(int32 Seed = 0);
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	void UnloadCurrentLevel();
 
 	// Level information
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	FString GetCurrentLevelName() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	bool IsLevelLoaded() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	TArray<FVector> GetSpawnPoints() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	TArray<FVector> GetObjectiveLocations() const;
 
 	// Level transitions
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	void TransitionToLevel(const FString& LevelName);
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	void RestartCurrentLevel();
 
 	// Level settings
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	void SetDifficulty(float Difficulty);
+
+	UFUNCTION(BlueprintCallable, Category = "Level")
 	float GetDifficulty() const { return CurrentDifficulty; }
 
 	// Events

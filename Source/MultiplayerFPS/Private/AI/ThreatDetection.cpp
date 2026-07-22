@@ -79,7 +79,7 @@ bool UThreatDetection::IsInCombatRange(AMultiplayerFPSCharacter* Observer, AMult
 	return Distance <= CombatRange;
 }
 
-void UThreatDetection::AlertNearbyAI(AMultiplayerFPSCharacter* AlertedBy, AMultiplayerFPSCharacter* Target, float AlertRadius)
+void UThreatDetection::AlertNearbyAI(AMultiplayerFPSCharacter* AlertedBy, AMultiplayerFPSCharacter* Target, float InAlertRadius)
 {
 	if (!AlertedBy || !Target)
 	{
@@ -95,7 +95,7 @@ void UThreatDetection::AlertNearbyAI(AMultiplayerFPSCharacter* AlertedBy, AMulti
 		if (AIController && AIController->GetPawn() != AlertedBy)
 		{
 			float Distance = FVector::Dist(AIController->GetPawn()->GetActorLocation(), AlertedBy->GetActorLocation());
-			if (Distance <= AlertRadius)
+			if (Distance <= InAlertRadius)
 			{
 				// Alert this AI - could set target or increase alertness
 				UE_LOG(LogTemp, Log, TEXT("AI alerted at distance %f"), Distance);

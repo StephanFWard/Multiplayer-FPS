@@ -1,6 +1,6 @@
 #include "Multiplayer/LobbyManager.h"
 #include "Multiplayer/MultiplayerFPSGameSession.h"
-#include "Player/MultiplayerFPSPlayerController.h"
+#include "Game/MultiplayerFPSPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 ULobbyManager::ULobbyManager()

@@ -152,7 +152,7 @@ void ABasicAIController::AttackPlayer(AMultiplayerFPSCharacter* TargetPlayer)
 	if (GetWorld()->GetTimeSeconds() - LastAttackTime >= AttackCooldown)
 	{
 		// Deal damage to player
-		TargetPlayer->TakeDamage(25.0f); // AI damage
+		TargetPlayer->ApplyDamagePublic(25.0f); // AI damage
 		LastAttackTime = GetWorld()->GetTimeSeconds();
 
 		UE_LOG(LogTemp, Warning, TEXT("AI attacked player for 25 damage"));

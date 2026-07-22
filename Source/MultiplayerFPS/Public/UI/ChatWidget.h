@@ -43,4 +43,10 @@ private:
 	const int32 MaxMessages = 50;
 
 	void AddMessageToHistory(const FString& Message);
+
+	UFUNCTION()
+	void OnSendButtonClicked();
+
+	UFUNCTION()
+	void OnChatTextCommitted(const FText& Text, ETextCommit::Type CommitMethod);
 };

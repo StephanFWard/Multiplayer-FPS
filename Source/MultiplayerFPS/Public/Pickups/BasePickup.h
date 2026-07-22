@@ -63,6 +63,14 @@ protected:
 		const FHitResult& SweepResult);
 
 	// Respawn logic
+public:
 	void DeactivatePickup();
 	void RespawnPickup();
+	
+	bool IsActive() const { return bIsActive; }
+	
+	// Public accessors for testing
+	void DeactivatePickupPublic() { DeactivatePickup(); }
+	void RespawnPickupPublic() { RespawnPickup(); }
+	bool IsActivePublic() const { return bIsActive; }
 };

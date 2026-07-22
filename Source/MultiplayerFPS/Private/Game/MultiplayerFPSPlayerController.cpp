@@ -3,6 +3,7 @@
 #include "UI/MultiplayerFPSHUD.h"
 #include "UI/ChatWidget.h"
 #include "Blueprint/UserWidget.h"
+#include "Weapons/Weapon.h"
 
 AMultiplayerFPSPlayerController::AMultiplayerFPSPlayerController()
 {
@@ -92,14 +93,14 @@ void AMultiplayerFPSPlayerController::UpdateHUD()
 	}
 
 	// Update health
-	GameHUD->UpdateHealth(ControlledCharacter->GetHealth(), ControlledCharacter->MaxHealth);
+	GameHUD->UpdateHealth(ControlledCharacter->GetHealth(), ControlledCharacter->GetMaxHealth());
 
 	// Update ammo
-	if (ControlledCharacter->CurrentWeapon)
+	if (ControlledCharacter->GetCurrentWeapon())
 	{
 		GameHUD->UpdateAmmo(
-			ControlledCharacter->CurrentWeapon->GetCurrentAmmo(),
-			ControlledCharacter->CurrentWeapon->GetTotalAmmo()
+			ControlledCharacter->GetCurrentWeapon()->GetCurrentAmmo(),
+			ControlledCharacter->GetCurrentWeapon()->GetTotalAmmo()
 		);
 	}
 

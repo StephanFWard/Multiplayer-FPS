@@ -56,6 +56,13 @@ protected:
 	TArray<FVector> PatrolPoints;
 	int32 CurrentPatrolIndex = 0;
 
+public:
 	void GeneratePatrolPoints();
 	FVector GetNextPatrolPoint();
+	
+	const TArray<FVector>& GetPatrolPoints() const { return PatrolPoints; }
+	
+	// Public accessors for testing
+	void GeneratePatrolPointsPublic() { GeneratePatrolPoints(); }
+	const TArray<FVector>& GetPatrolPointsPublic() const { return PatrolPoints; }
 };

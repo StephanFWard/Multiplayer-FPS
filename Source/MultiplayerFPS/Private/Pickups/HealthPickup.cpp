@@ -14,9 +14,9 @@ void AHealthPickup::OnPickup(AMultiplayerFPSCharacter* Player)
 	}
 
 	// Restore health to player
-	float CurrentHealth = Player->GetCurrentHealth();
+	float CurrentHealth = Player->GetHealth();
 	float NewHealth = FMath::Min(CurrentHealth + HealthAmount, MaxHealthRestore);
-	Player->SetCurrentHealth(NewHealth);
+	Player->Heal(HealthAmount);
 
 	UE_LOG(LogTemp, Log, TEXT("Player picked up %f health, now has %f health"), HealthAmount, NewHealth);
 
@@ -31,6 +31,6 @@ bool AHealthPickup::CanPickup(AMultiplayerFPSCharacter* Player) const
 	}
 
 	// Check if player needs health
-	float CurrentHealth = Player->GetCurrentHealth();
+	float CurrentHealth = Player->GetHealth();
 	return CurrentHealth < MaxHealthRestore;
 }

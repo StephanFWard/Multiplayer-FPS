@@ -5,6 +5,7 @@
 #include "LobbyManager.generated.h"
 
 class AMultiplayerFPSGameSession;
+class AMultiplayerFPSPlayerController;
 
 /**
  * Manages lobby creation, joining, and room discovery

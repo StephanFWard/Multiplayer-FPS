@@ -5,6 +5,7 @@
 #include "Sound/SoundBase.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
+#include "Components/DecalComponent.h"
 
 // Initialize static assets
 UParticleSystem* UDamageSystem::BloodParticleSystem = nullptr;
@@ -56,8 +57,7 @@ void UDamageSystem::SpawnBloodEffect(const FVector& Location, const FVector& Nor
 			Location,
 			Normal.Rotation(),
 			FVector(1.0f),
-			true,
-			EPSCPoolMethod::Auto
+			true
 		);
 	}
 }

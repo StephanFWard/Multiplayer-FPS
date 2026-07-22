@@ -123,7 +123,19 @@ protected:
 	class UInputAction* ReloadAction;
 	
 	UFUNCTION(BlueprintCallable, Category = "Health")
-	void TakeDamage(float Damage);
+	virtual float TakeDamage(float Damage, const FDamageEvent& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	// Public wrapper for AI damage
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void ApplyDamage(float Damage);
+
+public:
+	// Public wrapper for AI damage (public access for AI)
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void ApplyDamagePublic(float Damage);
+
+	// Setup input component
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void Heal(float Amount);
@@ -147,6 +159,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	void Reload();
+
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void StopFiring();
 
 	UFUNCTION(BlueprintCallable, Category = "Animation")
 	void PlayFireAnimation();

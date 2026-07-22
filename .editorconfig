@@ -10,16 +10,40 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Indentation override for c# files
+# Indentation override for c# files (keep 4 spaces for C# target/source build scripts)
 [*.cs]
 indent_size = 4
 indent_style = space
 
-# Trailing space override for markdown file
+# Unreal Engine C++ conventions
+# Unreal Engine uses tabs for indentation in C++ source and header files (tab width 4)
+# and uses specific type prefixes (A, U, F, I) for engine types. EditorConfig cannot
+# enforce all naming rules for C++, but it can set formatting rules for Unreal C++ files.
+[*.{cpp,c,cc,cxx,h,hpp,hh,hxx}]
+indent_style = tab
+tab_width = 4
+indent_size = 4
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 120
+continuation_indent_size = 4
+# Note: EditorConfig cannot enforce naming prefixes (A/U/F/I). Use clang-tidy or a linter for naming.
+
+# Keep trailing whitespace in Markdown files (documentation)
 [*.md]
 trim_trailing_whitespace = false
 
-# Indentation override for config files
+# Project config files use 2-space indentation (json, yml)
 [*.{json,yml}]
 indent_size = 2
 indent_style = space
+
+# Notes:
+# - Unreal naming conventions (A/U/F/I prefixes for C++ types) cannot be fully enforced via .editorconfig.
+#   Use a linter or clang-tidy rules to validate Unreal-style naming where applicable.
+# - C# files used by Unreal build tooling (Target.cs, ModuleRules.cs) remain 4-space indented to match
+#   existing tooling and Visual Studio defaults.
+# - If you want Roslyn naming rules for C# to match specific conventions, I can add dotnet_naming_* rules,
+#   but be careful: enforcing Unreal C++ prefixes in C# would break current build scripts.

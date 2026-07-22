@@ -9,6 +9,7 @@
 #include "InputMappingContext.h"
 #include "Systems/AnimationSystem.h"
 #include "Game/MultiplayerFPSGameMode.h"
+#include "Net/UnrealNetwork.h"
 
 AMultiplayerFPSCharacter::AMultiplayerFPSCharacter()
 {
@@ -99,41 +100,43 @@ void AMultiplayerFPSCharacter::SetupPlayerInputComponent(UInputComponent* Player
 		// Jumping
 		if (JumpAction)
 		{
-			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::StartedTriggered, this, &ACharacter::Jump);
-			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::CompletedTriggered, this, &ACharacter::StopJumping);
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		}
 
 		// Sprinting
 		if (SprintAction)
 		{
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::StartSprint);
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::CompletedTriggered, this, &AMultiplayerFPSCharacter::StopSprint);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AMultiplayerFPSCharacter::StartSprint);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMultiplayerFPSCharacter::StopSprint);
 		}
 
 		// Aiming
 		if (AimAction)
 		{
-			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::StartAim);
-			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::CompletedTriggered, this, &AMultiplayerFPSCharacter::StopAim);
+			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &AMultiplayerFPSCharacter::StartAim);
+			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &AMultiplayerFPSCharacter::StopAim);
 		}
 
 		// Firing
 		if (FireAction)
 		{
-			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::Fire);
-			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::CompletedTriggered, this, &AMultiplayerFPSCharacter::StopFiring);
+			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AMultiplayerFPSCharacter::Fire);
+			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AMultiplayerFPSCharacter::StopFiring);
 		}
 
 		// Reloading
 		if (ReloadAction)
 		{
-			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::StartedTriggered, this, &AMultiplayerFPSCharacter::Reload);
+			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &AMultiplayerFPSCharacter::Reload);
 		}
+	}
 }
 
 void AMultiplayerFPSCharacter::Move(const FInputActionValue& Value)
 {
-	if (const FVector2D MovementVector = Value.Get<FVector2D>())
+	FVector2D MovementVector = Value.Get<FVector2D>();
+	if (!MovementVector.IsZero())
 	{
 		// Move forward/backward
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -145,7 +148,8 @@ void AMultiplayerFPSCharacter::Move(const FInputActionValue& Value)
 
 void AMultiplayerFPSCharacter::Look(const FInputActionValue& Value)
 {
-	if (const FVector2D LookAxisVector = Value.Get<FVector2D>())
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	if (!LookAxisVector.IsZero())
 	{
 		// Look up/down
 		AddControllerPitchInput(LookAxisVector.Y);
@@ -262,15 +266,19 @@ void AMultiplayerFPSCharacter::StopFiring()
 	}
 }
 
-void AMultiplayerFPSCharacter::StopFiring()
+float AMultiplayerFPSCharacter::TakeDamage(float Damage, const FDamageEvent& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (CurrentWeapon)
+	CurrentHealth -= Damage;
+
+	if (CurrentHealth <= 0.0f)
 	{
-		CurrentWeapon->StopFiring();
+		Die();
 	}
+
+	return Damage;
 }
 
-void AMultiplayerFPSCharacter::TakeDamage(float Damage)
+void AMultiplayerFPSCharacter::ApplyDamage(float Damage)
 {
 	CurrentHealth -= Damage;
 
@@ -379,4 +387,9 @@ void AMultiplayerFPSCharacter::Server_SetSprinting_Implementation(bool bNewSprin
 {
 	bIsSprinting = bNewSprinting;
 	GetCharacterMovement()->MaxWalkSpeed = bIsSprinting ? SprintSpeed : (bIsAiming ? AimWalkSpeed : WalkSpeed);
+}
+
+void AMultiplayerFPSCharacter::ApplyDamagePublic(float Damage)
+{
+	ApplyDamage(Damage);
 }

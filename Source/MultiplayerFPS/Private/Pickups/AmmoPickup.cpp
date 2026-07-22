@@ -36,7 +36,7 @@ bool AAmmoPickup::CanPickup(AMultiplayerFPSCharacter* Player) const
 	AWeapon* CurrentWeapon = Player->GetCurrentWeapon();
 	if (CurrentWeapon)
 	{
-		return !CurrentWeapon->IsAmmoFull();
+		return CurrentWeapon->GetCurrentAmmo() < CurrentWeapon->GetMagazineCapacity();
 	}
 
 	return false;

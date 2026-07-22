@@ -16,7 +16,8 @@ public class MultiplayerFPS : ModuleRules
 			"EnhancedInput",
 			"UMG",
 			"Networking",
-			"Sockets"
+			"Sockets",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

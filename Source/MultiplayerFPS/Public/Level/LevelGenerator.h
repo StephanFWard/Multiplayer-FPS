@@ -24,7 +24,7 @@ public:
 	void ClearLevel();
 
 	// Settings
-	void SetDifficulty(float Difficulty) { CurrentDifficulty = Difficulty; }
+	void SetDifficulty(float InDifficulty) { CurrentDifficulty = InDifficulty; }
 	float GetDifficulty() const { return CurrentDifficulty; }
 
 	// Level data access
