@@ -276,7 +276,7 @@ namespace UnityStandardAssets.Water
                         DestroyImmediate(m_ReflectionTexture);
                     }
                     m_ReflectionTexture = new RenderTexture(textureSize, textureSize, 16);
-                    m_ReflectionTexture.name = "__WaterReflection" + GetInstanceID();
+                    m_ReflectionTexture.name = "__WaterReflection" + GetEntityId();
                     m_ReflectionTexture.isPowerOfTwo = true;
                     m_ReflectionTexture.hideFlags = HideFlags.DontSave;
                     m_OldReflectionTextureSize = textureSize;

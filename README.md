@@ -4,9 +4,44 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Template from jarvis](https://img.shields.io/badge/Hi-Jarvis-ff69b4.svg)](https://github.com/Armour/Jarvis)
 
-A multiplayer first-person shooter game ~~based on Unity3D~~ **being converted to Unreal Engine 5 (C++)** for improved performance and native C++ compilation. Different types of input devices are supported, including Kinect, Xbox controllers, Leap motion, and VR Glasses. (Each contained in a different branch, *UPDATE: those are not maintained since 2020, use at your own risk*)
+A multiplayer first-person shooter game. The **main, playable project is the Unity 6 edition** (see Quick Start below). The repository also contains an experimental **Unity → Unreal Engine 5 (C++) migration** (`Source/`, `Binaries/`, `MultiplayerFPS.uproject`) which is architecture-complete but separate from the runnable Unity game. Different input devices are supported, including Kinect, Xbox controllers, Leap Motion, and VR glasses. (Each input device lives on a separate branch; *those are not maintained since 2020, use at your own risk*.)
 
 ---
+
+## 🎮 Unity Edition — Quick Start (Unity 6000.6.0f1)
+
+> **Project Status:** ✅ Compiles and runs in **Unity 6 (6000.6.0f1)**.</br>
+> **Verified:** clean compile, `Assets/Scenes/Start.unity` loads, play-mode smoke test passes with **0 runtime errors**.
+
+### How to run
+
+1. Install **Unity 6000.6.0f1** (Unity Hub → *Add* → *Unity 6000.6.0f1*).
+2. Open the repo root folder as a project in Unity Hub, or launch `Unity.exe -projectPath <repo>`.
+3. Open the scene **`Assets/Scenes/Start.unity`** and press **Play**.
+4. Enter a player name + room name and press the join button to create/join a Photon room.
+   - A Photon **App Id is already configured** in `Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset`.
+   - If it ever reports "no App Id", get a free one at https://dashboard.photonengine.com and set it via **Window → Photon Unity Networking → Apply/Update**.
+5. For multiplayer, either launch a second client in the editor (File → Build And Run on a second copy) or build a standalone player (**File → Build Settings → Windows → Build And Run**) and run two instances.
+
+### Validation tool
+
+`Assets/Editor/ProjectValidator.cs` adds **Tools → Validate Project & Run Smoke Test**: it checks required tags/layers, scene integrity, missing scripts, Photon config, build settings, and then runs a few seconds of play mode while capturing runtime errors.
+
+Batch usage:
+
+```
+Unity.exe -batchmode -nographics -projectPath <repo> \
+    -executeMethod ProjectValidator.RunValidation \
+    -projectSmokeTest -logFile <log>
+```
+
+Exit code `0` = PASS, `1` = FAIL.
+
+### Gameplay
+
+- **Move:** WASD · **Look:** Mouse · **Sprint:** Left Shift · **Jump:** Space · **Fire:** Left Mouse
+- Full first-person + third-person networked player models, weapons, damage/health, death/respawn, name tags, and a chat/status panel.
+- Doors open automatically when a player stands in their trigger volume.
 
 ## 🚀 Unity → Unreal Engine 5 (C++) Migration Progress
 
