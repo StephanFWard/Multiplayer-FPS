@@ -124,3 +124,6 @@ ENV/
 *.swp
 *.swo
 *~
+# Unity user-specific editor settings
+UserSettings/
+.vsconfig
