@@ -86,6 +86,8 @@ public class TpsGun : MonoBehaviourPunCallbacks, IPunObservable {
                 gunParticles.Stop();
             }
             gunParticles.Play();
+            // Let AI bots on this client hear remote players' gunshots.
+            GunshotEvent.Broadcast(transform.position, photonView);
         }
     }
 

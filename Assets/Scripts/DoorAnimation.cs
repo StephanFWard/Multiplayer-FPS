@@ -36,7 +36,7 @@ public class DoorAnimation : MonoBehaviour {
     /// </summary>
     /// <param name="other">The other Collider involved in this collision.</param>
     void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.tag == "Player" || other.GetComponentInParent<EnemyBot>() != null) {
             animator.SetBool("Trigger", true);
         }
     }
@@ -46,7 +46,7 @@ public class DoorAnimation : MonoBehaviour {
     /// </summary>
     /// <param name="other">The other Collider involved in this collision.</param>
     void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.tag == "Player" || other.GetComponentInParent<EnemyBot>() != null) {
             animator.SetBool("Trigger", false);
         }
     }

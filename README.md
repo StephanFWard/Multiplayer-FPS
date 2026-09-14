@@ -25,7 +25,7 @@ A multiplayer first-person shooter game. Different input devices are supported, 
 
 ### Validation tool
 
-`Assets/Editor/ProjectValidator.cs` adds **Tools → Validate Project & Run Smoke Test**: it checks required tags/layers, scene integrity, missing scripts, Photon config, build settings, and then runs a few seconds of play mode while capturing runtime errors.
+`Assets/Editor/ProjectValidator.cs` adds **Tools → Validate Project & Run Smoke Test**: it checks required tags/layers, scene integrity, missing scripts, Photon config, build settings, and then runs a few seconds of play mode while capturing runtime errors. **Tools → Validate Project & Run Bot Smoke Test** additionally spawns enemy bots headless to exercise the AI, runtime NavMesh bake and gunshot-hearing code.
 
 Batch usage:
 
@@ -35,7 +35,17 @@ Unity.exe -batchmode -nographics -projectPath <repo> \
     -projectSmokeTest -logFile <log>
 ```
 
-Exit code `0` = PASS, `1` = FAIL.
+Exit code `0` = PASS, `1` = FAIL. Add `-projectBotSmokeTest` instead of `-projectSmokeTest` to include the AI bot test.
+
+### 🤖 Enemy bots (AI)
+
+Enemy bots are added automatically at play time — no scene setup required:
+
+- As soon as you join a room, **6 bots spawn across the city map** (streets and building interiors). They patrol, chase and attack you, and they **respawn** to keep the population topped up.
+- Bots are **spatially aware of gunfire**: every shot (yours, other players', other bots') is broadcast on `GunshotEvent`; bots within ~55 m rush to investigate where the shot came from, and walls muffle the sound (half the hearing radius without line of sight). Getting shot also alerts them to the shooter's position.
+- Bots shoot back with hitscan tracers and 3D gunshot audio, damage you through the normal `PlayerHealth` RPC (kill feed shows *"killed by Bot N"*), and can be shot down (they live on the existing `Shootable` layer — no new tags/layers needed).
+- A **NavMesh is baked automatically** when play starts (animated doors stay walkable — bots open them by walking into the door triggers).
+- Configure the bot population via `botCount` in `Assets/Scripts/EnemySpawner.cs`, and tuning values (view distance, FOV, hearing radius, damage, accuracy...) in `Assets/Scripts/EnemyBot.cs`.
 
 ### Gameplay
 

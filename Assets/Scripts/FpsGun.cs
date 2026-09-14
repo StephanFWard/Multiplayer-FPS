@@ -59,18 +59,27 @@ public class FpsGun : MonoBehaviour {
         RaycastHit shootHit;
         Ray shootRay = raycastCamera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0f));
         if (Physics.Raycast(shootRay, out shootHit, weaponRange, LayerMask.GetMask("Shootable"))) {
-            string hitTag = shootHit.transform.gameObject.tag;
-            switch (hitTag) {
-                case "Player":
-                    shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, damagePerShot, PhotonNetwork.LocalPlayer.NickName);
-                    PhotonNetwork.Instantiate("impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
-                    break;
-                default:
-                    PhotonNetwork.Instantiate("impact" + hitTag, shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
-                    break;
+            EnemyBot bot = shootHit.collider.GetComponentInParent<EnemyBot>();
+            if (bot != null) {
+                // Hit an enemy bot.
+                bot.TakeDamage(damagePerShot, transform.position);
+                Instantiate(Resources.Load("impactFlesh"), shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z));
+            } else {
+                string hitTag = shootHit.transform.gameObject.tag;
+                switch (hitTag) {
+                    case "Player":
+                        shootHit.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, damagePerShot, PhotonNetwork.LocalPlayer.NickName);
+                        PhotonNetwork.Instantiate("impactFlesh", shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
+                        break;
+                    default:
+                        PhotonNetwork.Instantiate("impact" + hitTag, shootHit.point, Quaternion.Euler(shootHit.normal.x - 90, shootHit.normal.y, shootHit.normal.z), 0);
+                        break;
+                }
             }
         }
         tpsGun.RPCShoot();  // RPC for third person view
+        // Broadcast the gunshot so AI bots can hear and react to it.
+        GunshotEvent.Broadcast(raycastCamera.transform.position, this);
     }
 
 

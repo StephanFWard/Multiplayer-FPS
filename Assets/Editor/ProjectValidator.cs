@@ -10,10 +10,13 @@
 //     seconds and reports a pass/fail summary.
 //
 // Interactive usage:       Tools > Validate Project & Run Smoke Test
+//                          Tools > Validate Project & Run Bot Smoke Test
 // Batch usage:
 //   Unity.exe -batchmode -nographics -projectPath <project> \
 //             -executeMethod ProjectValidator.RunValidation \
 //             -projectSmokeTest -logFile <log>
+//   (add -projectBotSmokeTest to also spawn enemy bots and exercise the AI,
+//    NavMesh bake and gunshot-hearing code headless)
 //
 // Exit codes: 0 = pass, 1 = fail.
 // -----------------------------------------------------------------------------
@@ -33,6 +36,7 @@ public static class ProjectValidator
 {
     private const string ResultFile = "Temp/ProjectValidation.json";
     private const string ArmedPref  = "ProjectValidator.SmokeTest";
+    private const string BotArmedPref = "ProjectValidator.BotSmokeTest";
 
     private const string ScenePath = "Assets/Scenes/Start.unity";
 
@@ -54,6 +58,7 @@ public static class ProjectValidator
 
     private const int MaxPlayFrames = 180;   // ~3 seconds at 60 fps
     private const int TimeoutSeconds = 120;  // hard stop in case frames never tick
+    private static int maxPlayFrames = MaxPlayFrames; // raised for the bot test
 
     private static readonly List<string> PlayModeErrors = new List<string>();
     private static int playFrames;
@@ -86,6 +91,11 @@ public static class ProjectValidator
             playSessionActive = true;
             playFrames = 0;
             smokeStartedAt = DateTime.UtcNow;
+            if (EditorPrefs.GetBool(BotArmedPref, false))
+            {
+                // Bot test needs more frames: navmesh bake + AI ticks.
+                maxPlayFrames = 900;
+            }
         }
     }
 
@@ -95,19 +105,29 @@ public static class ProjectValidator
         RunValidation(smoke: true);
     }
 
+    [MenuItem("Tools/Validate Project & Run Bot Smoke Test")]
+    public static void RunBotTestFromMenu()
+    {
+        RunValidation(smoke: true, botSmoke: true);
+    }
+
     /// <summary>
     /// Batch / menu entry point. Runs static checks and, when enabled, a
     /// play-mode smoke test.
     /// </summary>
     public static void RunValidation()
     {
+        string[] args = Environment.GetCommandLineArgs();
         bool smoke = Array.Exists(
-            Environment.GetCommandLineArgs(),
+            args,
             a => a.Equals("-projectSmokeTest", StringComparison.OrdinalIgnoreCase));
-        RunValidation(smoke);
+        bool botSmoke = Array.Exists(
+            args,
+            a => a.Equals("-projectBotSmokeTest", StringComparison.OrdinalIgnoreCase));
+        RunValidation(smoke || botSmoke, botSmoke);
     }
 
-    private static void RunValidation(bool smoke)
+    private static void RunValidation(bool smoke, bool botSmoke = false)
     {
         ResultData result = PerformStaticChecks();
         result.passed = result.missingTags.Count == 0
@@ -133,6 +153,16 @@ public static class ProjectValidator
         if (smoke)
         {
             EditorPrefs.SetBool(ArmedPref, true);
+            if (botSmoke)
+            {
+                EditorPrefs.SetBool(BotArmedPref, true);
+                maxPlayFrames = 900;
+                Debug.Log("[ProjectValidator] Bot smoke test armed: bots will spawn without a player.");
+            }
+            else
+            {
+                EditorPrefs.DeleteKey(BotArmedPref);
+            }
             PlayModeErrors.Clear();
             playFrames = 0;
             playSessionActive = true;
@@ -157,7 +187,7 @@ public static class ProjectValidator
 
         playFrames++;
         bool timedOut = (DateTime.UtcNow - smokeStartedAt).TotalSeconds > TimeoutSeconds;
-        if (playFrames >= MaxPlayFrames || timedOut)
+        if (playFrames >= maxPlayFrames || timedOut)
         {
             playSessionActive = false;
             if (timedOut)
@@ -193,6 +223,7 @@ public static class ProjectValidator
                 if (Application.isBatchMode && EditorPrefs.GetBool(ArmedPref, false))
                 {
                     EditorPrefs.DeleteKey(ArmedPref);
+                    EditorPrefs.DeleteKey(BotArmedPref);
                     FinalizeAndExit();
                 }
                 break;
@@ -207,6 +238,13 @@ public static class ProjectValidator
         }
 
         if (!Application.isPlaying || string.IsNullOrEmpty(condition))
+        {
+            return;
+        }
+
+        // Known internal Unity editor exception from the Search indexation
+        // that fires on batch startup; not related to the project.
+        if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Contains("UnityEditor.Search"))
         {
             return;
         }
